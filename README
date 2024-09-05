@@ -1,0 +1,16 @@
+Steps to run this project
+
+1. Download the folder as ZIP
+2. Unzip the downloaded folder and open in VS Code
+3. Open terminal in the root folder, use the commands as:
+4. cd frontend
+5. npm i
+6. cd ..
+7. cd backend
+8. npm i
+9. npm start
+This will start the frontend 
+To start the server open another terminal in the root folder and use the command as:
+10. cd backend
+11. npm start
+This will start the backend server
