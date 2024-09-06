@@ -5,11 +5,12 @@ import cookie_parser from "cookie-parser";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import authRoutes from './routes/auth.route.js';
+import jobRoutes from './routes/job.route.js';
 import user_model from "./models/user.model.js";
 
 dotenv.config();
 const app = express();
-// app.use(cookie_parser());
+app.use(cookie_parser());
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 
@@ -48,6 +49,7 @@ async function init() {
 }
 
 authRoutes(app);
+jobRoutes(app);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {

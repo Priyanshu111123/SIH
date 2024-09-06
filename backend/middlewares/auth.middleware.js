@@ -14,8 +14,16 @@ const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit OTP
 };
 const sendOTP = async (req, res) => {
+  
   const recipientEmail = req.body.emailId;
   const username = req.body.username;
+
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  if (!gmailRegex.test(recipientEmail)) {
+    res.status(401).send({
+      error: "Invalid Email Id"
+    })
+  } 
   const otp = generateOTP();
 
   const transporter = nodemailer.createTransport({
@@ -224,8 +232,8 @@ const verifyToken = (req, res, next) => {
     const token = req.cookies.token;
     jwt.verify(token, process.env.secret, async (err, decoded) => {
       if (err) {
-        return res.render("login", {
-          server_message: "You must be logged in",
+        return res.status(401).send({
+          error: "You must be logged in",
         });
       }
       try {
@@ -247,8 +255,8 @@ const verifyToken = (req, res, next) => {
       }
     });
   } else {
-    return res.render("login", {
-      server_message: "You must be logged in",
+    return res.status(401).send({
+      error: "You must be logged in",
     });
   }
 };

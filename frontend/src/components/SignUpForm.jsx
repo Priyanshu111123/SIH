@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useEffect } from "react";
 
 export default function SignUpForm () {
   const sendOTP = (e) => {
@@ -17,7 +16,7 @@ export default function SignUpForm () {
         },
       })
       .then((response) => {
-        console.log("Form successfully submitted:", response);
+        console.log("Form successfully submitted:", response.data.message);
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
@@ -75,6 +74,13 @@ export default function SignUpForm () {
             Email Id:
           </label>
           <input type="email" id="emailId" name="emailId" className="form-control" onkeyup="checkPassword()" />
+          <span id="signup_passwordmessage"></span>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="otp" className="form-label">
+            OTP:
+          </label>
+          <input type="number" id="otp" name="otp" className="form-control" onkeyup="checkPassword()" />
           <span id="signup_passwordmessage"></span>
         </div>
         <button onClick={sendOTP}>SEND OTP</button>
