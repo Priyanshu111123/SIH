@@ -97,11 +97,11 @@ const verifySignUpBody = async (req, res, next) => {
         error: "Invalid Email ID"
       });
     }
-    if (!req.body.otp) {
-      return res.status(401).send({
-        error: "Invalid OTP"
-      });
-    }
+    // if (!req.body.otp) {
+    //   return res.status(401).send({
+    //     error: "Invalid OTP"
+    //   });
+    // }
     const user = await user_model.findOne({ username: req.body.username });
     if (user) {
       return res.status(401).send({
@@ -282,6 +282,26 @@ const isEmployer = (req, res, next) => {
   }
 };
 
+const isEmployee = (req, res, next) => {
+  try {
+    const user = req.user;
+    if (user && user.userType == "EMPLOYEE") {
+      next();
+    } else {
+      return res.status(403).send({
+        warning: "Only EMPLOYEES are allowed to access this endpoint",
+        redirectTo: "/",
+      });
+    }
+  } catch (err) {
+    console.log("Error while validating EMPLOYEE");
+    return res.status(401).send({
+      error: "Error while validating EMPLOYEE",
+      redirectTo: "/login",
+    });
+  }
+}
+
 const auth_middleware = {
   verifySignUpbody: verifySignUpBody,
   verifySignInBody: verifySignInBody,
@@ -289,6 +309,7 @@ const auth_middleware = {
   findToken: findToken,
   verifyToken: verifyToken,
   isEmployer: isEmployer,
+  isEmployee: isEmployee,
   sendOTP: sendOTP,
 };
 

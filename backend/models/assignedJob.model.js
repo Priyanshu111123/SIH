@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const jobSchema = new mongoose.Schema({
+const assignedJobSchema = new mongoose.Schema({
     title : {
         type : String,
         required : true,
@@ -36,22 +36,28 @@ const jobSchema = new mongoose.Schema({
     qualification : {
         type: [String]
     },
-    proposals : {
-        type : Number,
-        default: 0
-    },
     postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    assigned: {
-        type : Boolean,
-        default : false
+    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    progressPercent: {
+        type : Number,
+        default : 0,
     },
-    assignedTo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+    progressMessage: [{
+        message: {
+            type: String,
+        },
+        timestamp: {
+            type: Date,
+            default: Date.now
+        }
+    }],
+    completed: {
+        type: Boolean,
+        default: false
     }
-
+    
 }, {timestamps : true, versionKey : false})
 
-const job_model = mongoose.model("Jobs", jobSchema)
+const assignedJob_model = mongoose.model("AssignedJobs", assignedJobSchema)
 
-export default job_model;
+export default assignedJob_model;

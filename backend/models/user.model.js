@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name : {
@@ -35,6 +35,22 @@ const userSchema = new mongoose.Schema({
         immutable : true,
         default : "EMPLOYEE",
         enum : ["EMPLOYEE", "EMPLOYER", "ADMIN"]
+    },
+    jobsAssigned : {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'AssignedJobs'
+    },
+    jobsPosted : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref: 'Jobs'
+    },
+    jobsApplied : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref: 'Jobs'
+    },
+    jobsUndertaken : {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'AssignedJobs'
     }
 }, {timestamps : true, versionKey : false})
 

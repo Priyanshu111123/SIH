@@ -8,13 +8,13 @@ import userOTP_model from "../models/userOTP.model.js";
 // User signup controller
 const signup = async (req, res) => {
   const request_body = req.body;
-  const otp = req.body.otp;
-  const userOTP = await userOTP_model.findOne({username: request_body.username});
-  if(userOTP.otp !== otp) {
-    res.status(401).send({
-      error: "Incorrect OTP"
-    });
-  } else {
+  // const otp = req.body.otp;
+  // const userOTP = await userOTP_model.findOne({username: request_body.username});
+  // if(userOTP.otp !== otp) {
+  //   res.status(401).send({
+  //     error: "Incorrect OTP"
+  //   });
+  // } else {
     await userOTP_model.deleteMany({username: request_body.username});
     const userObj = {
       name: request_body.name,
@@ -35,7 +35,7 @@ const signup = async (req, res) => {
         error: "User Registration Failed",
       });
     }
-  }
+  // }
 };
 
 // User signin controller
