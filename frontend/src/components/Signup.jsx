@@ -20,9 +20,9 @@ export default function Signup(){
   }
 
   //handle Signup API Integration here
-  const createAccount=()=>{
+  // const createAccount=()=>{
 
-  }
+  // }
 
     return(
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
