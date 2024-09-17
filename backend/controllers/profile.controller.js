@@ -37,7 +37,12 @@ const viewProfile = async (req, res) => {
   let required_user_model = clientProfile_model;
   if (req.user.userType == "EMPLOYEE") required_user_model = freelancerProfile_model;
   try {
-    const user_profile = await required_user_model.findOne({ _id: req.user.profile }, "-profileImage");
+    const user_profile = await required_user_model
+  .findOne({ _id: req.user.profile }, "-profileImage")
+  .populate("jobsApplied")
+  .populate("jobsUndertaken");
+
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).send({
       profile: user_profile,
     });

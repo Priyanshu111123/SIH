@@ -10,6 +10,10 @@ const Navbar = () => {
     navigate("/profile_page")
   }
 
+  const goto_homepage = () => [
+    navigate("/homepage")
+  ]
+
   return (
     <nav className="flex justify-between items-center p-4 ">
       {/* Left section with logo and links */}
@@ -19,7 +23,7 @@ const Navbar = () => {
           alt="Upwork logo"
           className="h-10 pl-3"
         />
-        <div className="text-xl tracking-tight mr-4">Freelancia</div>
+        <div onClick={goto_homepage} className="text-xl tracking-tight mr-4 cursor-pointer">Freelancia</div>
         <ul className="flex space-x-6  text-white-700">
           <li className="hover:text-orange-600 cursor-pointer tracking-tight">Find work</li>
           
