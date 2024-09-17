@@ -46,8 +46,10 @@ export default function Login() {
         },
       })
       .then((response) => {
-        navigate("/homepage");
-        console.log(response.data.message);
+        if(response.data.userType === "EMPLOYEE")
+          navigate("/homepage");
+        else
+          navigate("/homepage_admin");
       })
       .catch((error) => {
         console.error("Error submitting form:", error);

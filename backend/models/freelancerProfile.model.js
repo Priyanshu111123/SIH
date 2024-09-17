@@ -23,6 +23,15 @@ const freelancerProfileSchema = new mongoose.Schema({
     image: Buffer,      
     contentType: String 
   },
+  github: {
+    type: String,
+  },
+  linkedIn: {
+    type: String,
+  },
+  twitter: {
+    type: String
+  },
   skills: {
     type: [String]
   },

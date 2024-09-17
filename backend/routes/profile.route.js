@@ -20,6 +20,9 @@ function profileRoutes (app) {
   app.post("/updateSkills", [auth_middleware.verifyToken, auth_middleware.isEmployee], profile_controller.updateSkills);
   app.post("/updateLanguages", [auth_middleware.verifyToken, auth_middleware.isEmployee], profile_controller.updateLanguages);
   app.post("/updateAvailability", [auth_middleware.verifyToken, auth_middleware.isEmployee], profile_controller.updateAvailability);
+  app.post("/updateGithub", [auth_middleware.verifyToken, auth_middleware.isEmployee], profile_controller.updateGithub);
+  app.post("/updateTwitter", [auth_middleware.verifyToken, auth_middleware.isEmployee], profile_controller.updateTwitter);
+  app.post("/updateLinkedIn", [auth_middleware.verifyToken, auth_middleware.isEmployee], profile_controller.updateLinkedIn);
   
 };
 

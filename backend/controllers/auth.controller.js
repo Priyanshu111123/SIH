@@ -13,7 +13,7 @@ const signup = async (req, res) => {
   const request_body = req.body;
   const otp = req.body.otp;
   const userOTP = await userOTP_model.findOne({username: request_body.username});
-  if(userOTP.otp !== otp) {
+  if(userOTP.otp != otp) {
     res.status(401).send({
       error: "Incorrect OTP"
     });
@@ -79,7 +79,7 @@ const signin = async (req, res) => {
     res.status(201).cookie("token", token);
     res.send({
       message: "Logged In Successfully",
-      redirectTo: "/",
+      userType: user.userType,
     });
   } catch (error) {
     console.log("Error: Password Validation failed", error);
