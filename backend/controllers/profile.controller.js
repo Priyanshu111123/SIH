@@ -135,6 +135,51 @@ const updateAvailability = async(req, res) => {
     })
   }
 };
+const updateGithub = async(req, res) => {
+  try {
+    await freelancerProfile_model.findByIdAndUpdate( req.user.profile, {
+      github : req.body.github
+    });
+    res.status(201).send({
+      message: "Github Profile updated"
+    })
+  } catch(error) {
+    console.log("Error while updating Github Profile: ", error);
+    res.status(500).send({
+      error: "Failed to Update Github Profile"
+    })
+  }
+};
+const updateTwitter = async(req, res) => {
+  try {
+    await freelancerProfile_model.findByIdAndUpdate( req.user.profile, {
+      twitter : req.body.twitter
+    });
+    res.status(201).send({
+      message: "Twitter Profile updated"
+    })
+  } catch(error) {
+    console.log("Error while updating Twitter Profile: ", error);
+    res.status(500).send({
+      error: "Failed to Update Twitter Profile"
+    })
+  }
+};
+const updateLinkedIn = async(req, res) => {
+  try {
+    await freelancerProfile_model.findByIdAndUpdate( req.user.profile, {
+      linkedIn : req.body.linkedIn
+    });
+    res.status(201).send({
+      message: "LinkedIn updated"
+    })
+  } catch(error) {
+    console.log("Error while updating LinkedIn Profile: ", error);
+    res.status(500).send({
+      error: "Failed to Update LinkedIn Profile"
+    })
+  }
+};
 
 
 const profile_controller = {
@@ -145,6 +190,9 @@ const profile_controller = {
   updateSkills: updateSkills,
   updateLanguages: updateLanguages,
   updateAvailability: updateAvailability,
+  updateGithub: updateGithub,
+  updateTwitter: updateTwitter,
+  updateLinkedIn: updateLinkedIn
 };
 
 export default profile_controller;

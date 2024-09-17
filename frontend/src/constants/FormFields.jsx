@@ -68,11 +68,11 @@ const signupFields=[
         labelFor:"Otp",
         id:"otp",
         name:"otp",
-        type:"password",
+        type:"number",
         autoComplete:"otp",
         isRequired:true,
         placeholder:"One time Password"   
-    }
+    },
 ]
 
 export {loginFields,signupFields}
