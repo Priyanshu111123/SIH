@@ -5,7 +5,7 @@ import { ShieldHalf } from "lucide-react";
 import { PlugZap } from "lucide-react";
 import { GlobeLock } from "lucide-react";
 
-import user1 from "../assets/profile-pictures/user1.jpg";
+// import user1 from "../assets/profile-pictures/user1.jpg";
 import user2 from "../assets/profile-pictures/user2.jpg";
 import user3 from "../assets/profile-pictures/user3.jpg";
 import user4 from "../assets/profile-pictures/user4.jpg";
@@ -23,7 +23,7 @@ export const testimonials = [
   {
     user: "Krishna Rana",
     company: "Data Science",
-    image: user1,
+    // image: user1,
     text: " Currently pursuing a B-TECH degree in Computer Science and Engineering at Lovely Professional University, Krishna is dedicated to staying up-to-date with the latest advancements in their field",
   },
   {
