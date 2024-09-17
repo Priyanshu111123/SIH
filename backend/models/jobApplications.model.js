@@ -7,9 +7,9 @@ const jobApplicationSchema = new mongoose.Schema({
     },
     applicants: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'User'
+        ref: 'freelancerProfile'
     }
-});
+}, {timestamps : true, versionKey : false});
 
 const jobApplication_model = mongoose.model("JobApplications", jobApplicationSchema);
 

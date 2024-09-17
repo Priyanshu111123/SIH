@@ -34,12 +34,3 @@ gmailID = "Your gmail account"
 appPassword = "Your app password for gmail account"
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
-
-        react-router-dom
-        axios
-        tailwind
-        bootstrap
-
-These 4 packages are already installed and configured in the frontend folder, so no need to reinstall. You can directly start using them.
-
-------------------------------------------------------------------------------------------------------------------------------------------------

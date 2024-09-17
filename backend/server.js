@@ -6,13 +6,14 @@ import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import authRoutes from './routes/auth.route.js';
 import jobRoutes from './routes/job.route.js';
+import profileRoutes from "./routes/profile.route.js";
 import user_model from "./models/user.model.js";
 
 dotenv.config();
 const app = express();
 app.use(cookie_parser());
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 app.get("/api", (req, res) => {
     res.send("Server is ready to accept api");
@@ -50,6 +51,7 @@ async function init() {
 
 authRoutes(app);
 jobRoutes(app);
+profileRoutes(app);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {

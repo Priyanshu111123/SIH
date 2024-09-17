@@ -29,7 +29,7 @@ export default function SignUpForm () {
         emailId: e.target.emailId.value,
         username: e.target.username.value,
         password: e.target.password.value,
-        otp: e.target.otp.value
+        otp: e.target.otp.value,
     }
     axios
       .post("/signup_user", data, {

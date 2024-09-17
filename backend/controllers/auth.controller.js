@@ -4,7 +4,10 @@ import jwt from "jsonwebtoken";
 
 // Database model modules
 import user_model from "../models/user.model.js";
+import clientProfile_model from "../models/clientProfile.model.js";
+import freelancerProfile_model from "../models/freelancerProfile.model.js";
 import userOTP_model from "../models/userOTP.model.js";
+
 // User signup controller
 const signup = async (req, res) => {
   const request_body = req.body;
@@ -25,6 +28,25 @@ const signup = async (req, res) => {
     };
     try {
       const user_created = await user_model.create(userObj);
+      const user_profile = {
+        username: user_created.username,
+        name: user_created.name
+      }
+      if(user_created.userType === "EMPLOYER") {  
+          const clientProfile = await clientProfile_model.create(user_profile);
+          await user_model.findByIdAndUpdate(
+            user_created._id,
+            { profile : clientProfile._id }, 
+            { new: true } 
+          );
+      } else {
+        const freelancerProfile = await freelancerProfile_model.create(user_profile);
+        await user_model.findByIdAndUpdate(
+          user_created._id,
+          { profile : freelancerProfile._id }, 
+          { new: true } 
+        );
+      }
       res.status(201).send({
         message: "Thanks " + user_created.name + "! You can now login using your username : " + user_created.username,
         redirectTo: "/",
@@ -53,7 +75,7 @@ const signin = async (req, res) => {
         error: "Incorrect password",
       });
     }
-    const token = jwt.sign({ id: user.username }, process.env.secret, { expiresIn: 7200 });
+    const token = jwt.sign({ id: user.username }, process.env.secret, { expiresIn: "14 days" });
     res.status(201).cookie("token", token);
     res.send({
       message: "Logged In Successfully",
