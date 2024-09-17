@@ -96,11 +96,11 @@ const verifySignUpBody = async (req, res, next) => {
         error: "Invalid Email ID"
       });
     }
-    // if (!req.body.otp) {
-    //   return res.status(401).send({
-    //     error: "Invalid OTP"
-    //   });
-    // }
+    if (!req.body.otp) {
+      return res.status(401).send({
+        error: "Invalid OTP"
+      });
+    }
     const user = await user_model.findOne({ username: req.body.username });
     if (user) {
       return res.status(401).send({
