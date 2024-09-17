@@ -1,54 +1,88 @@
-import { useState } from 'react';
-import { signupFields } from "../constants/FormFields"
+import React, { useState } from 'react';
+import { signupFields } from "../constants/FormFields";
 import FormAction from "./FormAction";
 import Input from "./Input";
+import axios from "axios";
 
-const fields=signupFields;
-let fieldsState={};
+export default function Signup() {
+  const [signupState, setSignupState] = useState(() => {
+    const initialState = {};
+    signupFields.forEach(field => {
+      initialState[field.id] = '';
+    });
+    return initialState;
+  });
 
-fields.forEach(field => fieldsState[field.id]='');
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
-export default function Signup(){
-  const [signupState,setSignupState]=useState(fieldsState);
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setSignupState(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
+  };
 
-  const handleChange=(e)=>setSignupState({...signupState,[e.target.id]:e.target.value});
-
-  const handleSubmit=(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(signupState)
-    createAccount()
-  }
+    setMessage(''); // Clear any previous messages
 
-  //handle Signup API Integration here
-  // const createAccount=()=>{
+    try {
+      await createAccount();
+    } catch (error) {
+      setMessage('Signup failed. Please try again.');
+      setMessageType('error');
+    }
+  };
 
-  // }
+  const createAccount = async () => {
+    try {
+      const response = await axios.post('/signup', signupState, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    return(
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-        <div className="">
-        {
-                fields.map(field=>
-                        <Input
-                            key={field.id}
-                            handleChange={handleChange}
-                            value={signupState[field.id]}
-                            labelText={field.labelText}
-                            labelFor={field.labelFor}
-                            id={field.id}
-                            name={field.name}
-                            type={field.type}
-                            isRequired={field.isRequired}
-                            placeholder={field.placeholder}
-                    />
-                
-                )
-            }
+      if (response.ok) {
+        setMessage('Signup successful! Welcome.');
+        setMessageType('success');
+      } else {
+        throw new Error('Unexpected response status');
+      }
+    } catch (error) {
+      console.error('Signup failed:', error);
+      setMessage('Signup failed. Please try again.');
+      setMessageType('error');
+    }
+  };
+
+  return (
+    <div>
+      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div>
+          {signupFields.map(field => (
+            <Input
+              key={field.id}
+              handleChange={handleChange}
+              value={signupState[field.id]}
+              labelText={field.labelText}
+              labelFor={field.labelFor}
+              id={field.id}
+              name={field.name}
+              type={field.type}
+              isRequired={field.isRequired}
+              placeholder={field.placeholder}
+            />
+          ))}
           <FormAction handleSubmit={handleSubmit} text="Signup" />
         </div>
-
-         
-
       </form>
-    )
+      {message && (
+        <div className={`message ${messageType === 'success' ? 'success' : 'error'}`}>
+          {message}
+        </div>
+      )}
+    </div>
+  );
 }
