@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import LoginPage from "./Pages/Login";
  import SignupPage from './Pages/Signup';
+import Homepage from './Pages/Homepage';
 
 
 
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/" element={<Landingpage/>} />
             <Route path="/signup" element={<SignupPage/>} />
             <Route path="/login" element={<LoginPage/>}/>
+            <Route path="/homepage" element={<Homepage/>}/>
         </Routes>
       </BrowserRouter>
     

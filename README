@@ -13,6 +13,7 @@
 Executing these commands will automatically download all the dependencies, for both frontend and backend, required to run the project.
 
 Frontend and Backend runs on two different servers.
+I have added frontend
 
 To run the Frontend React setup:
     You should be inside the "frontend" folder, once you are there run the command as:
