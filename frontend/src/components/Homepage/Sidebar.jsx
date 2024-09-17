@@ -1,6 +1,6 @@
 // src/ClientProfile.js
 import React, { useState } from 'react';
-
+// import { Box } from '@mui/material';
   const handleSearch = (query) => {
     // Perform the search operation here
     // For example, you could filter a list of items based on the query
@@ -14,9 +14,9 @@ import React, { useState } from 'react';
     setSearchResults(results);
   };
 
-const ClientProfile = (cl) => {
+const Sidebar = (cl) => {
   return (
-    <div className="bg-gray-70 text-white p-6 rounded-lg shadow-md">
+   <div className="bg-gray-700 text-white p-6 rounded-lg shadow-md border border-gray-400">
       {/* Client Profile Image */}
       <div className="flex items-center space-x-4 mb-4">
         <div>
@@ -43,12 +43,12 @@ const ClientProfile = (cl) => {
 
       {/* Contact Information */}
       <div className="mt-4">
-        <h3 className="text-lg font-semibold">Contact Information:</h3>
-        <p><strong>Email:</strong> </p>
-        <p><strong>Phone:</strong> </p>
+        <h3 className="text-lg font-semibold">Availability of jobs</h3>
+        <p><strong>skills</strong> </p>
+        <p><strong>Domain</strong> </p>
       </div>
     </div>
   );
 };
 
-export default ClientProfile;
+export default Sidebar;
