@@ -1,5 +1,4 @@
 // Dependencies
-import path from "path";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import userOTP_model from "../models/userOTP.model.js";
@@ -273,9 +272,9 @@ const isEmployer = (req, res, next) => {
         redirectTo: "/",
       });
     }
-  } catch (err) {
-    console.log("Error while validating EMPLOYER");
-    return res.status(401).send({
+  } catch (error) {
+    console.log("Error while validating EMPLOYER", error);
+    return res.status(400).send({
       error: "Error while validating EMPLOYER",
       redirectTo: "/login",
     });
@@ -293,9 +292,9 @@ const isEmployee = (req, res, next) => {
         redirectTo: "/",
       });
     }
-  } catch (err) {
-    console.log("Error while validating EMPLOYEE");
-    return res.status(401).send({
+  } catch (error) {
+    console.log("Error while validating EMPLOYEE", error);
+    return res.status(400).send({
       error: "Error while validating EMPLOYEE",
       redirectTo: "/login",
     });
