@@ -55,19 +55,43 @@ const getJobs = async (req, res) => {
 };
 
 const applyJob = async (req, res) => {
-  const job_id = new mongoose.Types.ObjectId(req.params.job_id);
+  if (req.params.job_id) {
+    const job_id = new mongoose.Types.ObjectId(req.params.job_id);
 
-  try {
-    if (!(await job_model.findOne({ _id: job_id }))) {
-      return res.status(400).send({
-        error: "No such Job exists",
-      });
-    }
-    let jobApplication = await jobApplication_model.findOne({ job_id: job_id });
-    const user = req.user;
-    if (jobApplication) {
-      if (!jobApplication.applicants.includes(user._id)) {
-        jobApplication.applicants.push(user.profile);
+    try {
+      if (!(await job_model.findOne({ _id: job_id }))) {
+        return res.status(400).send({
+          error: "No such Job exists",
+        });
+      }
+      let jobApplication = await jobApplication_model.findOne({ job_id: job_id });
+      const user = req.user;
+      if (jobApplication) {
+        if (!jobApplication.applicants.includes(user._id)) {
+          jobApplication.applicants.push(user.profile);
+          await jobApplication.save();
+          await job_model.findByIdAndUpdate(job_id, { $inc: { proposals: 1 } }, { new: true });
+          try {
+            await freelancerProfile_model.findByIdAndUpdate(user.profile, { $addToSet: { jobsApplied: job_id } }, { new: true });
+          } catch (error) {
+            console.log("Freelancer Profile Updation for Job Application Failed: ", error);
+            res.status(500).send({
+              message: "Failed to Update Freelancer Profile",
+            });
+          }
+          res.status(201).send({
+            message: "Successfully Applied for Job",
+          });
+        } else {
+          res.status(403).send({
+            error: "You have already applied for this job",
+          });
+        }
+      } else {
+        jobApplication = new jobApplication_model({
+          job_id: job_id,
+          applicants: [user.profile],
+        });
         await jobApplication.save();
         await job_model.findByIdAndUpdate(job_id, { $inc: { proposals: 1 } }, { new: true });
         try {
@@ -81,35 +105,13 @@ const applyJob = async (req, res) => {
         res.status(201).send({
           message: "Successfully Applied for Job",
         });
-      } else {
-        res.status(403).send({
-          error: "You have already applied for this job",
-        });
       }
-    } else {
-      jobApplication = new jobApplication_model({
-        job_id: job_id,
-        applicants: [user.profile],
-      });
-      await jobApplication.save();
-      await job_model.findByIdAndUpdate(job_id, { $inc: { proposals: 1 } }, { new: true });
-      try {
-        await freelancerProfile_model.findByIdAndUpdate(user.profile, { $addToSet: { jobsApplied: job_id } }, { new: true });
-      } catch (error) {
-        console.log("Freelancer Profile Updation for Job Application Failed: ", error);
-        res.status(500).send({
-          message: "Failed to Update Freelancer Profile",
-        });
-      }
-      res.status(201).send({
-        message: "Successfully Applied for Job",
+    } catch (error) {
+      console.log("Job Application Failed: ", error);
+      res.status(500).send({
+        error: "Failed to Apply for Job",
       });
     }
-  } catch (error) {
-    console.log("Job Application Failed: ", error);
-    res.status(500).send({
-      error: "Failed to Apply for Job",
-    });
   }
 };
 
@@ -126,15 +128,14 @@ const getJobApplications = async (req, res) => {
       error: "Failed to Fetch Job Applications",
     });
   }
-  
 };
 
 const assignJob = async (req, res) => {
   try {
     const job_id = req.params.job_id;
     const job = await job_model.findOne({ _id: job_id });
-    const employer = await user_model.findOne({ _id : req.user._id});
-    const freelancer = await user_model.findOne({ _id : req.params.user_id });
+    const employer = await user_model.findOne({ _id: req.user._id });
+    const freelancer = await user_model.findOne({ _id: req.params.user_id });
     const assignedJob = {
       title: job.title,
       location: job.location,
@@ -180,20 +181,20 @@ const updateProgress = async (req, res) => {
       await assignedJob_model.findByIdAndUpdate(
         assignedJob_id,
         {
-          $push: { progressMessage: { message: req.body.message } }, 
-          progressPercent: req.body.percent, 
+          $push: { progressMessage: { message: req.body.message } },
+          progressPercent: req.body.percent,
           completed: true,
         },
-        { new: true } 
+        { new: true }
       );
     } else {
       await assignedJob_model.findByIdAndUpdate(
         assignedJob_id,
         {
-          $push: { progressMessage: { message: req.body.message } }, 
-          progressPercent: req.body.percent, 
+          $push: { progressMessage: { message: req.body.message } },
+          progressPercent: req.body.percent,
         },
-        { new: true } 
+        { new: true }
       );
     }
     res.status(201).send({

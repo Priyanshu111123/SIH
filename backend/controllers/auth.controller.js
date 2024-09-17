@@ -18,7 +18,6 @@ const signup = async (req, res) => {
   //     error: "Incorrect OTP"
   //   });
   // } else {
-  console.log(req.body);
     await userOTP_model.deleteMany({username: request_body.username});
     const userObj = {
       name: request_body.name,

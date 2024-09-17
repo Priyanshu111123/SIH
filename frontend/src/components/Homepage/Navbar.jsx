@@ -1,7 +1,14 @@
 // src/Navbar.js
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 const Navbar = () => {
+
+  const navigate = useNavigate();
+
+  const gotoProfile = () => {
+    navigate("/profile_page")
+  }
 
   return (
     <nav className="flex justify-between items-center p-4 ">
@@ -39,7 +46,7 @@ const Navbar = () => {
           <img
             src="https://via.placeholder.com/30"
             alt="User profile"
-            className="w-8 h-8 rounded-full cursor-pointer"
+            className="w-8 h-8 rounded-full cursor-pointer" onClick={gotoProfile}
           />
         </div>
       </div>
