@@ -5,6 +5,7 @@ import Input from "./Input";
 import axios from "axios";
 
 export default function Signup() {
+
   const [signupState, setSignupState] = useState(() => {
     const initialState = {};
     signupFields.forEach(field => {
@@ -15,6 +16,28 @@ export default function Signup() {
 
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+
+  const sendOTP = (e) => {
+    const email = document.getElementById("emailId").value;
+    const username = document.getElementById("username").value;
+    e.preventDefault();
+    const data = {
+      emailId: email,
+      username: username
+    }
+    axios
+      .post("/api/sendOTP", data, {
+        headers: {
+          "Content-Type": "application/json", 
+        },
+      })
+      .then((response) => {
+        console.log("Form successfully submitted:", response.data.message);
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
+  }
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -31,6 +54,7 @@ export default function Signup() {
     try {
       await createAccount();
     } catch (error) {
+      console.log(error);
       setMessage('Signup failed. Please try again.');
       setMessageType('error');
     }
@@ -38,14 +62,14 @@ export default function Signup() {
 
   const createAccount = async () => {
     try {
-      const response = await axios.post('/signup', signupState, {
+      const response = await axios.post("/api/signup_user", signupState, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
-
-      if (response.ok) {
-        setMessage('Signup successful! Welcome.');
+  
+      if (response.status === 200 || response.status === 201) {
+        setMessage(response.message);
         setMessageType('success');
       } else {
         throw new Error('Unexpected response status');
@@ -75,6 +99,7 @@ export default function Signup() {
               placeholder={field.placeholder}
             />
           ))}
+          <button onClick={sendOTP}> Send OTP</button>
           <FormAction handleSubmit={handleSubmit} text="Signup" />
         </div>
       </form>
